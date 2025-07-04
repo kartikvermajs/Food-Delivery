@@ -20,7 +20,7 @@ const PlaceOrder = () => {
   });
 
   // Define the frontend URL
-  // const frontend_url = "http://localhost:5173";
+  // const frontend_url = "http://localhost:5174";
   const frontend_url = "https://tomatofront-il1y.onrender.com";
 
   const onChangeHandler = (event) => {
@@ -105,15 +105,13 @@ const PlaceOrder = () => {
 
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!token) {
-      navigate('/cart')
+      navigate("/cart");
+    } else if (getTotalCartAmount() === 0) {
+      navigate("/cart");
     }
-    else if(getTotalCartAmount()===0)
-    {
-      navigate('/cart')
-    }
-  },[token])
+  }, [token]);
 
   return (
     <form onSubmit={placeOrder} className="place-order">

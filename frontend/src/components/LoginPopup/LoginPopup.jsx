@@ -28,14 +28,19 @@ const LoginPopup = ({ setShowLogin }) => {
       newUrl += "/api/user/register";
     }
 
-    const response = await axios.post(newUrl, data);
+    try {
+      const response = await axios.post(newUrl, data, {
+        withCredentials: true,
+      });
 
-    if (response.data.success) {
-      setToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
-      setShowLogin(false);
-    } else {
-      alert(response.data.message);
+      if (response.data.success) {
+        setToken("authenticated");
+        setShowLogin(false);
+      } else {
+        alert(response.data.message);
+      }
+    } catch (err) {
+      alert("Something went wrong. Please try again.");
     }
   };
 
@@ -51,10 +56,7 @@ const LoginPopup = ({ setShowLogin }) => {
           />
         </div>
         <div className="login-popup-inputs">
-          {/* We will hide this input field when the type is Login */}
-          {currState === "Login" ? (
-            <></>
-          ) : (
+          {currState === "Sign Up" && (
             <input
               name="name"
               onChange={onChangeHandler}
@@ -86,7 +88,7 @@ const LoginPopup = ({ setShowLogin }) => {
         </button>
         <div className="login-popup-condition">
           <input type="checkbox" required />
-          <p> By continuing, i agree to the terms of use & privacy policy</p>
+          <p>By continuing, I agree to the terms of use & privacy policy</p>
         </div>
         {currState === "Login" ? (
           <p>

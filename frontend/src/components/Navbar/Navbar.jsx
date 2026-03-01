@@ -35,7 +35,9 @@ const Navbar = ({ setShowLogin }) => {
           Menu
         </a>
         <a
-          href="#app-download"
+          href="https://food-delivery-admin-u5bn.onrender.com/"
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={() => setMenu("Mobile-App")}
           className={menu === "Mobile-App" ? "active" : ""}
         >
@@ -63,7 +65,7 @@ const Navbar = ({ setShowLogin }) => {
           <div className="navbar-profile">
             <img src={assets.profile_icon} alt="" />
             <ul className="nav-profile-dropdown">
-              <li onClick={()=>navigate('/myorders')}>
+              <li onClick={() => navigate('/myorders')}>
                 <img src={assets.bag_icon} alt="" />
                 <p>Orders</p>
               </li>

@@ -1,37 +1,42 @@
 import './Footer.css'
 import { assets } from './../../assets/assets';
+import { Github, Instagram, Linkedin } from 'lucide-react';
+
 const Footer = () => {
   return (
     <div className='footer' id='footer'>
       <div className="footer-content">
         <div className="footer-content-left">
-            <img src={assets.logo} alt='' />
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus repellat sed quas et temporibus accusantium officiis quos provident corrupti magnam.</p>
-            <div className="footer-social-icons">
-                <img src={assets.facebook_icon} alt="" />
-                <img src={assets.linkedin_icon} alt="" />
-                <img src={assets.twitter_icon} alt="" />
-            </div>
+          <img src={assets.logo} alt='' />
+          <p>This website is made for learning purpose.</p>
+
+          <div className="footer-social-icons">
+            <a href="https://github.com/kartikvermajs" target="_blank" rel="noopener noreferrer">
+              <Github size={30} />
+            </a>
+
+            <a href="https://www.linkedin.com/in/kartik-verma-4b99012b8" target="_blank" rel="noopener noreferrer">
+              <Linkedin size={30} />
+            </a>
+
+            <a href="https://www.instagram.com/_kenpachi_.z/" target="_blank" rel="noopener noreferrer">
+              <Instagram size={30} />
+            </a>
+          </div>
         </div>
+
         <div className="footer-content-center">
-            <h2>COMPANY</h2>
-            <ul>
-                <li>Home</li>
-                <li>About Us</li>
-                <li>Delivery</li>
-                <li>Privacy Policy</li>
-            </ul>
         </div>
+
         <div className="footer-content-right">
-            <h2>GET IN TOUCH</h2>
-            <ul>
-                <li>+91-9516951830</li>
-                <li>contact@kartik.com</li>
-            </ul>
+          <h2>GET IN TOUCH</h2>
+          <ul>
+            <li>kartikverma88273@outlook.com</li>
+          </ul>
         </div>
-        
+
       </div>
-      <hr/>
+      <hr />
       <p className='footer-copyright'>Copyright 2024 @ Tomato.com - All Right Reserved</p>
     </div>
   )

@@ -41,7 +41,7 @@ const Navbar = ({ setShowLogin }) => {
           onClick={() => setMenu("Mobile-App")}
           className={menu === "Mobile-App" ? "active" : ""}
         >
-          Mobile-App
+          Admin Panel
         </a>
         <a
           href="#footer"

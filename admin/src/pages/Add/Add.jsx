@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { assets } from "../../assets/assets";
 import "./Add.css";
-import axios from 'axios';
+import api from "../../utils/api";
 import { toast } from "react-toastify";
 
-const Add = ({url}) => {
-  
-  // const url = "https://food-delivery-backend-smf6.onrender.com"
+const Add = () => {
+
   const [image, setImage] = useState(false);
   const [data, setData] = useState({
     name: "",
@@ -15,8 +14,8 @@ const Add = ({url}) => {
     category: "Salad",
   });
 
-  
-  const [loading, setLoading] = useState(false); 
+
+  const [loading, setLoading] = useState(false);
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -41,19 +40,21 @@ const Add = ({url}) => {
     formData.append("price", Number(data.price));
     formData.append("category", data.category);
     formData.append("image", image);
-    const response = await axios.post(`${url}/api/food/add`, formData);
-    if (response.data.success) {
-      setData({
-        name: "",
-        description: "",
-        price: "",
-        category: "Salad",
-      });
-      setImage(false);
-      setLoading(false);
-      toast.success(response.data.message);
-    } else {
-      toast.error(response.data.message);
+    try {
+      const response = await api.post(`/api/food/add`, formData);
+      if (response.data.success) {
+        setData({
+          name: "",
+          description: "",
+          price: "",
+          category: "Salad",
+        });
+        setImage(false);
+        setLoading(false);
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      // Handled globally
     }
   };
 

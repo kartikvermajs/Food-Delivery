@@ -22,8 +22,8 @@ const addToCart = async (req, res) => {
     await userModel.findByIdAndUpdate(req.body.userId, { cartData });
     res.json({ success: true, message: "Added to Cart" });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Error" });
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message || "Error adding item to cart" });
   }
 };
 
@@ -52,8 +52,8 @@ const removeFromCart = async (req, res) => {
     await userModel.findByIdAndUpdate(req.body.userId, { cartData });
     res.json({ success: true, message: "Removed From Cart" });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Error" });
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message || "Error removing item from cart" });
   }
 };
 
@@ -71,8 +71,8 @@ const getCart = async (req, res) => {
     let cartData = userData.cartData || {};
     res.json({ success: true, cartData });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Error" });
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message || "Error fetching cart data" });
   }
 };
 

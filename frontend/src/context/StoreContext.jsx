@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 export const StoreContext = createContext(null);
 
@@ -11,8 +11,6 @@ const StoreContextProvider = (props) => {
 
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [food_list, setFoodList] = useState([]);
-  const url = "https://food-delivery-backend-smf6.onrender.com";
-  // const url = "http://localhost:4000";
 
   const syncCartToLocal = (newCart) => {
     setCartItems(newCart);
@@ -27,11 +25,7 @@ const StoreContextProvider = (props) => {
     syncCartToLocal(updatedCart);
 
     if (token) {
-      await axios.post(
-        `${url}/api/cart/add`,
-        { itemId },
-        { headers: { token } }
-      );
+      await api.post(`/api/cart/add`, { itemId });
     }
   };
 
@@ -45,11 +39,7 @@ const StoreContextProvider = (props) => {
     syncCartToLocal(updatedCart);
 
     if (token) {
-      await axios.post(
-        `${url}/api/cart/remove`,
-        { itemId },
-        { headers: { token } }
-      );
+      await api.post(`/api/cart/remove`, { itemId });
     }
   };
 
@@ -62,7 +52,7 @@ const StoreContextProvider = (props) => {
 
   const fetchFoodList = async () => {
     try {
-      const response = await axios.get(`${url}/api/food/list`);
+      const response = await api.get(`/api/food/list`);
       setFoodList(response.data.data);
     } catch (err) {
       console.error("Failed to fetch food list:", err);
@@ -71,11 +61,7 @@ const StoreContextProvider = (props) => {
 
   const loadCartDataFromBackend = async () => {
     try {
-      const response = await axios.post(
-        `${url}/api/cart/get`,
-        {},
-        { headers: { token } }
-      );
+      const response = await api.post(`/api/cart/get`, {});
       const serverCart = response.data.cartData || {};
       syncCartToLocal(serverCart);
     } catch (err) {
@@ -98,7 +84,6 @@ const StoreContextProvider = (props) => {
     addToCart,
     removeFromCart,
     getTotalCartAmount,
-    url,
     token,
     setToken,
   };

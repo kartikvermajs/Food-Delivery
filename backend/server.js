@@ -13,9 +13,22 @@ const port = 4000;
 
 // middleware
 app.use(express.json());
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.ADMIN_URL,
+  "https://tomatofront-il1y.onrender.com",
+  "https://food-delivery-admin-kuhl.onrender.com"
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: "https://tomatofront-il1y.onrender.com",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );

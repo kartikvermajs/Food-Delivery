@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import "./LoginPopup.css";
 import { assets } from "./../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
-import axios from "axios";
+import api from "../../utils/api";
 
 const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
@@ -12,6 +12,7 @@ const LoginPopup = ({ setShowLogin }) => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -21,26 +22,29 @@ const LoginPopup = ({ setShowLogin }) => {
 
   const onLogin = async (event) => {
     event.preventDefault();
-    let newUrl = url;
+    setLoading(true);
+
+    let newUrl = "";
     if (currState === "Login") {
-      newUrl += "/api/user/login";
+      newUrl = "/api/user/login";
     } else {
-      newUrl += "/api/user/register";
+      newUrl = "/api/user/register";
     }
 
     try {
-      const response = await axios.post(newUrl, data, {
-        withCredentials: true,
-      });
+      const response = await api.post(newUrl, data);
 
       if (response.data.success) {
-        setToken("authenticated");
+        setToken(response.data.token); // Store correct token locally
+        localStorage.setItem("token", response.data.token);
         setShowLogin(false);
       } else {
         alert(response.data.message);
       }
     } catch (err) {
-      alert("Something went wrong. Please try again.");
+      // Error is handled by api interceptor
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,8 +87,8 @@ const LoginPopup = ({ setShowLogin }) => {
             required
           />
         </div>
-        <button type="submit">
-          {currState === "Sign Up" ? "Create account" : "Login"}
+        <button type="submit" disabled={loading}>
+          {loading ? "Please wait..." : (currState === "Sign Up" ? "Create account" : "Login")}
         </button>
         <div className="login-popup-condition">
           <input type="checkbox" required />

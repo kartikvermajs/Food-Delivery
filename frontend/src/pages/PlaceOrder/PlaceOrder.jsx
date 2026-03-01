@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import "./PlaceOrder.css";
 import { StoreContext } from "../../context/StoreContext";
-import axios from "axios";
+import api from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
@@ -19,9 +19,8 @@ const PlaceOrder = () => {
     phone: "",
   });
 
-  // Define the frontend URL
-  // const frontend_url = "http://localhost:5174";
-  const frontend_url = "https://tomatofront-il1y.onrender.com";
+  // Define the frontend URL dynamically to support local and deployed environments
+  const frontend_url = window.location.origin;
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -45,9 +44,7 @@ const PlaceOrder = () => {
       amount: getTotalCartAmount() + 2,
     };
 
-    const response = await axios.post(url + "/api/order/place", orderData, {
-      headers: { token },
-    });
+    const response = await api.post("/api/order/place", orderData);
 
     if (response.data.success) {
       const { order_id, order_data } = response.data;
@@ -67,12 +64,9 @@ const PlaceOrder = () => {
             razorpay_signature: response.razorpay_signature,
             orderId: order_data._id,
           };
-          const verifyResponse = await axios.post(
-            `${url}/api/order/verify`, // Use the base URL for the API
-            verifyData,
-            {
-              headers: { token },
-            }
+          const verifyResponse = await api.post(
+            `/api/order/verify`,
+            verifyData
           );
 
           // Check the verification response and redirect accordingly

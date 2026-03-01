@@ -31,7 +31,7 @@ const placeOrder = async (req, res) => {
     res.json({ success: true, order_id: razorpayOrder.id, order_data: newOrder });
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: "Error creating order" });
+    res.status(500).json({ success: false, message: error.message || "Error creating order" });
   }
 };
 
@@ -56,7 +56,7 @@ const verifyOrder = async (req, res) => {
 
     if (generatedSignature === razorpay_signature) {
       // If the payment is verified, we keep the default status "Food Processing"
-      await orderModel.findByIdAndUpdate(orderId, {status: "Paid", payment: true });
+      await orderModel.findByIdAndUpdate(orderId, { status: "Paid", payment: true });
       res.json({ success: true, message: "Payment verified successfully" });
     } else {
       res.json({ success: false, message: "Payment verification failed" });
@@ -65,17 +65,17 @@ const verifyOrder = async (req, res) => {
 
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: "Error verifying payment" });
+    res.status(500).json({ success: false, message: error.message || "Error verifying payment" });
   }
 };
 
 const userOrders = async (req, res) => {
   try {
-    const orders = await orderModel.find({userId:req.body.userId})
-    res.json({success:true, data:orders})
+    const orders = await orderModel.find({ userId: req.body.userId })
+    res.json({ success: true, data: orders })
   } catch (error) {
-    console.log(error);
-    res.json({success:false,message:"Error"})
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message || "Error fetching user orders" });
   }
 }
 
@@ -83,11 +83,10 @@ const userOrders = async (req, res) => {
 const listOrders = async (req, res) => {
   try {
     const orders = await orderModel.find({});
-    res.json({success:true,data:orders})
+    res.json({ success: true, data: orders })
   } catch (error) {
-    console.log(error);
-    res.json({success:false,message:"Error"})
-    
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message || "Error fetching list orders" });
   }
 }
 
@@ -102,7 +101,7 @@ const updateStatus = async (req, res) => {
     res.json({ success: true, message: "Order status updated successfully" });
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: "Error updating order status" });
+    res.status(500).json({ success: false, message: error.message || "Error updating order status" });
   }
 };
 

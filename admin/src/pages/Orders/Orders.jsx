@@ -1,29 +1,34 @@
 import { useState } from "react";
 import "./Orders.css";
-import axios from 'axios';
 import { toast } from "react-toastify";
 import { useEffect } from "react";
-import { assets } from "../../assets/assets.js";
-const Orders = ({ url }) => {
+import { assets } from "../../assets/assets";
+import api from "../../utils/api";
+const Orders = () => {
   const [orders, setOrders] = useState([]);
 
   const fetchAllOrders = async () => {
-    const response = await axios.get(url + "/api/order/list");
-    if (response.data.success) {
-      setOrders(response.data.data);
-      console.log(response.data.data);
-    } else {
-      toast.error("Error");
+    try {
+      const response = await api.get("/api/order/list");
+      if (response.data.success) {
+        setOrders(response.data.data);
+      }
+    } catch (error) {
+      // Handled globally
     }
   };
 
   const statusHandler = async (event, orderId) => {
-    const response = await axios.post(url+"/api/order/status",{
-      orderId,
-      status:event.target.value
-    })
-    if (response.data.success) {
-      await fetchAllOrders();
+    try {
+      const response = await api.post("/api/order/status", {
+        orderId,
+        status: event.target.value
+      })
+      if (response.data.success) {
+        await fetchAllOrders();
+      }
+    } catch (error) {
+      // Handled globally
     }
   }
 
@@ -48,16 +53,16 @@ const Orders = ({ url }) => {
                   }
                 })}
               </p>
-              <p className="order-item-name">{order.address.firstName+" "+order.address.lastName}</p>
+              <p className="order-item-name">{order.address.firstName + " " + order.address.lastName}</p>
               <div className="order-item-address">
-                <p>{order.address.street+","}</p>
-                <p>{order.address.city+", "+order.address.state+", "+order.address.country+", "+order.address.zipcode}</p>
+                <p>{order.address.street + ","}</p>
+                <p>{order.address.city + ", " + order.address.state + ", " + order.address.country + ", " + order.address.zipcode}</p>
               </div>
               <p className="order-item-phone">{order.address.phone}</p>
             </div>
             <p>Items : {order.items.length}</p>
             <p>&#8377;{order.amount}</p>
-            <select onChange={(event)=>statusHandler(event,order._id)} value={order.status}>
+            <select onChange={(event) => statusHandler(event, order._id)} value={order.status}>
               <option value="Food Processing">Food Processing</option>
               <option value="Out for delivery">Out for delivery</option>
               <option value="Delivered">Delivered</option>

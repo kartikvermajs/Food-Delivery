@@ -1,13 +1,15 @@
 import './Footer.css'
-import { assets } from './../../assets/assets';
 import { Github, Instagram, Linkedin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
     <div className='footer' id='footer'>
       <div className="footer-content">
         <div className="footer-content-left">
-          <img src={assets.logo} alt='' />
+          <Link to="/" className="logo-link">
+            <h1 className="logo-text">Mealio .</h1>
+          </Link>
           <p>This website is made for learning purpose.</p>
 
           <div className="footer-social-icons">
@@ -37,7 +39,7 @@ const Footer = () => {
 
       </div>
       <hr />
-      <p className='footer-copyright'>Copyright 2024 @ Tomato.com - All Right Reserved</p>
+      <p className='footer-copyright'>Copyright 2024 @ Mealio.com - All Right Reserved</p>
     </div>
   )
 }

@@ -67,4 +67,9 @@
 .footer-social-icons a {
     margin-right: 15px;
     color: #d9d9d9;
+    transition: 0.3s;
+}
+
+.footer-social-icons a:hover {
+    color: var(--primary-color);
 }

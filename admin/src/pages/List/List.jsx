@@ -3,12 +3,15 @@ import "./List.css";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import api from "../../utils/api";
+import { Loader2 } from "lucide-react";
 
 const List = () => {
 
   const [list, setList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchList = async () => {
+    setIsLoading(true);
     try {
       const response = await api.get(`/api/food/list`);
       if (response.data.success) {
@@ -16,6 +19,8 @@ const List = () => {
       }
     } catch (error) {
       // Handled globally
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -46,19 +51,25 @@ const List = () => {
           <b>Price</b>
           <b>Action</b>
         </div>
-        {list.map((item, index) => {
-          return (
-            <div key={index} className="list-table-format">
-              <img src={item.image} alt="" />
-              <p>{item.name}</p>
-              <p>{item.category}</p>
-              <p>₹{item.price}</p>
-              <p onClick={() => removeFood(item._id)} className="cursor">
-                x
-              </p>
-            </div>
-          );
-        })}
+        {isLoading ? (
+          <div className="list-loader-container">
+            <Loader2 className="spinning-loader" size={40} color="#E23744" />
+          </div>
+        ) : (
+          list.map((item, index) => {
+            return (
+              <div key={index} className="list-table-format">
+                <img src={item.image} alt="" />
+                <p>{item.name}</p>
+                <p>{item.category}</p>
+                <p>₹{item.price}</p>
+                <p onClick={() => removeFood(item._id)} className="cursor">
+                  x
+                </p>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );

@@ -67,14 +67,33 @@
     cursor: pointer;
 }
 
-.search-input {
+.search-input-wrapper {
+    position: relative;
     flex-grow: 1;
-    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 35px 8px 15px;
     border-radius: 20px;
     border: 1px solid var(--primary-color);
     outline: none;
     font-size: 16px;
     transition: all 0.3s ease;
+}
+
+.search-close-icon {
+    position: absolute;
+    right: 10px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.search-close-icon:hover {
+    color: var(--primary-color);
 }
 
 .navbar-search-icon {

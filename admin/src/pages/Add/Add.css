@@ -1,49 +1,81 @@
-.add{
+.add {
     width: 70%;
     margin-left: max(5vw, 25px);
     margin-top: 50px;
     color: #6d6d6d;
     font-size: 16px;
 }
-.add form{
+
+.add form {
     gap: 20px;
 }
-.add-img-upload img{
+
+.add-img-upload img {
     width: 120px;
 }
-.add-product-name, .add-product-description{
+
+.add-product-name,
+.add-product-description {
     width: max(40%, 280px);
 }
-.add-product-name input, .add-product-description textarea{
+
+.add-product-name input,
+.add-product-description textarea {
     padding: 10px;
 }
-.add-category-price{
+
+.add-category-price {
     display: flex;
     gap: 30px;
 }
-.add-category-price select, .add-category-price input{
+
+.add-category-price select,
+.add-category-price input {
     max-width: 120px;
     padding: 10px;
 }
-.add-btn{
+
+.add-btn {
     max-width: 120px;
     border: none;
-    padding: 10px;
-    background-color: black;
+    padding: 12px;
+    background-color: #E23744;
     color: white;
     cursor: pointer;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-btn:hover:not(:disabled) {
+    background-color: #D12F3B;
+}
+
+.add-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }
 
 .spinner {
-    border: 3px solid #f3f3f3; /* Light gray */
-    border-top: 3px solid #3498db; /* Blue */
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    /* Light red/transparent */
+    border-top: 3px solid white;
+    /* White spinner head */
     border-radius: 50%;
     width: 20px;
     height: 20px;
     animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

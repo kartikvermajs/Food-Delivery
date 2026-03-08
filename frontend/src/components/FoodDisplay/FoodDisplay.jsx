@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import "./FoodDisplay.css";
 import { StoreContext } from "../../context/StoreContext";
 import FoodItem from "../FoodItem/FoodItem";
+import { Loader2 } from "lucide-react";
 
 const FoodDisplay = ({ category }) => {
   const { food_list } = useContext(StoreContext);
@@ -45,16 +46,22 @@ const FoodDisplay = ({ category }) => {
     <div className="food-display" id="food-display">
       <h2>Top Dishes Near You</h2>
       <div className="food-display-list">
-        {displayList.map((item) => (
-          <FoodItem
-            key={item._id}
-            id={item._id}
-            name={item.name}
-            description={item.description}
-            price={item.price}
-            image={item.image}
-          />
-        ))}
+        {food_list.length === 0 ? (
+          <div className="list-loader-container">
+            <Loader2 className="spinning-loader" size={50} color="#E23744" />
+          </div>
+        ) : (
+          displayList.map((item) => (
+            <FoodItem
+              key={item._id}
+              id={item._id}
+              name={item.name}
+              description={item.description}
+              price={item.price}
+              image={item.image}
+            />
+          ))
+        )}
       </div>
       {isMobile && totalPages > 1 && (
         <div className="pagination">

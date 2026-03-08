@@ -69,6 +69,32 @@ const listFood = async (req, res) => {
   }
 }
 
+// search food items
+const searchFood = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q) {
+      return res.status(400).json({ success: false, message: "Query parameter 'q' is required" });
+    }
+
+    // Create a case-insensitive regex pattern
+    const searchRegex = new RegExp(q, 'i');
+
+    const foods = await foodModel.find({
+      $or: [
+        { name: { $regex: searchRegex } },
+        { description: { $regex: searchRegex } },
+        { category: { $regex: searchRegex } }
+      ]
+    });
+
+    res.json({ success: true, data: foods });
+  } catch (error) {
+    console.error("Search Error:", error);
+    res.status(500).json({ success: false, message: "Error performing search" });
+  }
+}
 
 // remove food item
 // const removeFood = async (req, res) => {
@@ -127,4 +153,4 @@ const removeFood = async (req, res) => {
 };
 
 
-export { addFood, listFood, removeFood }
+export { addFood, listFood, removeFood, searchFood }

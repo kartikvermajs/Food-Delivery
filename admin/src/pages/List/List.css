@@ -20,6 +20,26 @@
     overflow-x: auto;
 }
 
+.list-loader-container {
+    display: flex;
+    justify-content: center;
+    padding: 50px 0;
+}
+
+.spinning-loader {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width:600px) {
     .list-table-format {
         min-width: 500px;

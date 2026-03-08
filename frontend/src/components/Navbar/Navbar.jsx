@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { assets } from "../../assets/assets";
+import { X } from "lucide-react";
 import "./Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
@@ -7,12 +8,32 @@ import { StoreContext } from "../../context/StoreContext";
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("Home");
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
-    navigate("/")
+    navigate("/");
+  };
+
+  const handleSearchTrigger = () => {
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchActive(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearchTrigger();
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    setIsSearchActive(false);
   };
 
   return (
@@ -60,11 +81,28 @@ const Navbar = ({ setShowLogin }) => {
             <img
               src={assets.search_icon}
               alt="Search"
-              onClick={() => setIsSearchActive(!isSearchActive)}
+              onClick={() => {
+                if (isSearchActive && searchQuery.trim()) {
+                  handleSearchTrigger();
+                } else {
+                  setIsSearchActive(!isSearchActive);
+                }
+              }}
               className="search-icon"
             />
             {isSearchActive && (
-              <input type="text" placeholder="Search..." className="search-input" autoFocus />
+              <div className="search-input-wrapper">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  className="search-input"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  autoFocus
+                />
+                <X className="search-close-icon" onClick={clearSearch} size={20} />
+              </div>
             )}
           </div>
           {!isSearchActive && (
